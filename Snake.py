@@ -140,12 +140,12 @@ class Snake:
 class Player:
     def __init__(self) -> None:
         self.visited_color = VISITED_COL
-        self.visited: Set[Position] = {}
+        self.visited: Set[Position] = set()
         self.chosen_path: List[Direction] = []
 
     def move(self, snake: Snake) -> bool:
         try:
-            next_step = self.chosen_path.pop()
+            next_step = self.chosen_path.pop(0)
             snake.turn(next_step)
             return False
         except IndexError:
@@ -204,7 +204,7 @@ class SnakeGame:
         while not self.handle_events():
             self.fps_clock.tick(FPS)
             self.drawGrid()
-            if not self.player.move(self.snake):
+            if self.player.move(self.snake):
                 self.player.search_path(self.snake, self.food, self.obstacles)
             self.snake.move()
             self.snake.eat(self.food)
