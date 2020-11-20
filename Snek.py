@@ -13,7 +13,7 @@ INIT_LENGTH = 4
 
 WIDTH = 480
 HEIGHT = 480
-GRID_SIDE = 20
+GRID_SIDE = 24
 GRID_WIDTH = WIDTH // GRID_SIDE
 GRID_HEIGHT = HEIGHT // GRID_SIDE
 
@@ -44,7 +44,7 @@ class Position:
     y: int
 
     def check_bounds(self, width: int, height: int):
-        return (self.x == width) or (self.x < 0) or (self.y > height) or (self.y == 0)
+        return (self.x >= width) or (self.x < 0) or (self.y >= height) or (self.y < 0)
 
     def draw_node(self, surface: pygame.Surface, color: tuple, background: tuple):
         r = pygame.Rect(
@@ -55,14 +55,26 @@ class Position:
 
 
 class GameNode:
+    nodes = []
+
     def __init__(self):
         self.position = Position(0, 0)
         self.color = (0, 0, 0)
 
     def randomize_position(self):
+        try:
+            self.nodes.remove(self.position)
+        except ValueError:
+            pass
+
         self.position = Position(
             random.randint(0, GRID_SIDE - 1), random.randint(0, GRID_SIDE - 1),
         )
+
+        if self.position not in self.nodes:
+            self.nodes.append(self.position)
+        else:
+            self.randomize_position()
 
     def draw(self, surface: pygame.Surface):
         self.position.draw_node(surface, self.color, BRIGHT_BG)
