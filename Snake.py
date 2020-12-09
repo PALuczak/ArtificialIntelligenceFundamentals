@@ -59,9 +59,15 @@ class Position:
         else:
             return False
 
+    def __str__(self):
+        return f"X{self.x};Y{self.y};"
+
+    def __hash__(self):
+        return hash(str(self))
+
 
 class GameNode:
-    nodes: List[Position] = []
+    nodes: Set[Position] = set()
 
     def __init__(self):
         self.position = Position(0, 0)
@@ -70,7 +76,7 @@ class GameNode:
     def randomize_position(self):
         try:
             GameNode.nodes.remove(self.position)
-        except ValueError:
+        except KeyError:
             pass
 
         condidate_position = Position(
@@ -79,7 +85,7 @@ class GameNode:
 
         if condidate_position not in GameNode.nodes:
             self.position = condidate_position
-            GameNode.nodes.append(self.position)
+            GameNode.nodes.add(self.position)
         else:
             self.randomize_position()
 
@@ -159,7 +165,7 @@ class Snake:
 class Player:
     def __init__(self) -> None:
         self.visited_color = VISITED_COL
-        self.visited: List[Position] = []
+        self.visited: Set[Position] = set()
         self.chosen_path: List[Direction] = []
 
     def move(self, snake: Snake) -> bool:
@@ -229,11 +235,11 @@ class SnakeGame:
             self.snake.eat(self.food)
             for ob in self.obstacles:
                 self.snake.hit_obstacle(ob)
-            self.snake.draw(self.surface)
-            self.food.draw(self.surface)
             for ob in self.obstacles:
                 ob.draw(self.surface)
             self.player.draw_visited(self.surface)
+            self.snake.draw(self.surface)
+            self.food.draw(self.surface)
             self.screen.blit(self.surface, (0, 0))
             text = self.myfont.render(
                 "Score {0}".format(self.snake.score), 1, (0, 0, 0)
