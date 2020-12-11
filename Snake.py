@@ -231,6 +231,7 @@ class SnakeGame:
             self.drawGrid()
             if self.player.move(self.snake):
                 self.player.search_path(self.snake, self.food, self.obstacles)
+                self.player.move(self.snake)
             self.snake.move()
             self.snake.eat(self.food)
             for ob in self.obstacles:
