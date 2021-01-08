@@ -120,6 +120,7 @@ class Snake:
         self.positions = [Position((GRID_SIDE / 2), (GRID_SIDE / 2))]
         self.direction = random.choice([e for e in Direction])
         self.score = 0
+        self.hasReset = True
 
     def get_head_position(self) -> Position:
         return self.positions[0]
@@ -131,6 +132,7 @@ class Snake:
             self.direction = direction
 
     def move(self):
+        self.hasReset = False
         cur = self.get_head_position()
         x, y = self.direction.value
         new = Position(cur.x + x, cur.y + y,)
@@ -148,7 +150,8 @@ class Snake:
         if self.get_head_position() == food.position:
             self.length += 1
             self.score += 1
-            food.randomize_position()
+            while food.position in self.positions:
+                food.randomize_position()
 
     def hit_obstacle(self, obstacle: Obstacle):
         if self.get_head_position() == obstacle.position:
@@ -229,7 +232,7 @@ class SnakeGame:
         while not self.handle_events():
             self.fps_clock.tick(FPS)
             self.drawGrid()
-            if self.player.move(self.snake):
+            if self.player.move(self.snake) or self.snake.hasReset:
                 self.player.search_path(self.snake, self.food, self.obstacles)
                 self.player.move(self.snake)
             self.snake.move()
