@@ -7,7 +7,7 @@ import sys
 import random
 
 
-FPS = 15
+FPS = 10
 
 INIT_LENGTH = 4
 
@@ -199,6 +199,7 @@ class Player:
 class SnakeGame:
     def __init__(self, snake: Snake, player: Player) -> None:
         pygame.init()
+        pygame.display.set_caption("AIFundamentals - SnakeGame")
 
         self.snake = snake
         self.food = Food()

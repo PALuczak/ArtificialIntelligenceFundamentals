@@ -11,7 +11,7 @@ FPS = 30
 class Board:
     def __init__(self, width: int, height: int):
         self.surface = pygame.display.set_mode((width, height), 0, 32)
-        pygame.display.set_caption("AIFundamentals 2020 - PongGame")
+        pygame.display.set_caption("AIFundamentals - PongGame")
 
     def draw(self, *args):
         background = (0, 0, 0)
