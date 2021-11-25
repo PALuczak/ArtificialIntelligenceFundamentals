@@ -231,7 +231,7 @@ class FuzzyPlayer(Player):
 
     def act(self, x_diff: int, y_diff: int):
         velocity = self.make_decision(x_diff, y_diff)
-        self.move(self.racket.rect.center + velocity)
+        self.move(self.racket.rect.x + velocity)
 
     def make_decision(self, x_diff: int, y_diff: int):
         # racket_controller.compute()
