@@ -117,7 +117,7 @@ class Snake:
 
     def reset(self):
         self.length = self.init_length
-        self.positions = [Position((GRID_SIDE / 2), (GRID_SIDE / 2))]
+        self.positions = [Position((GRID_SIDE // 2), (GRID_SIDE // 2))]
         self.direction = random.choice([e for e in Direction])
         self.score = 0
         self.hasReset = True
