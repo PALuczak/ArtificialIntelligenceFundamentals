@@ -38,7 +38,12 @@ class Drawable:
 
 class Ball(Drawable):
     def __init__(
-        self, x: int, y: int, radius: int = 20, color=(255, 10, 0), speed: int = 3,
+        self,
+        x: int,
+        y: int,
+        radius: int = 20,
+        color=(255, 10, 0),
+        speed: int = 3,
     ):
         super(Ball, self).__init__(x, y, radius, radius, color)
         pygame.draw.ellipse(self.surface, self.color, [0, 0, self.width, self.height])
@@ -172,7 +177,9 @@ class PongGame:
         while not self.handle_events():
             self.ball.move(self.board, self.player_paddle, self.opponent_paddle)
             self.board.draw(
-                self.ball, self.player_paddle, self.opponent_paddle,
+                self.ball,
+                self.player_paddle,
+                self.opponent_paddle,
             )
             self.oponent.act(
                 self.oponent.racket.rect.centerx - self.ball.rect.centerx,
@@ -220,22 +227,79 @@ class HumanPlayer(Player):
 # DO NOT MODIFY CODE ABOVE THIS LINE
 # ----------------------------------
 
+# import numpy as np
+# import matplotlib.pyplot as plt
+
 
 class FuzzyPlayer(Player):
     def __init__(self, racket: Racket, ball: Ball, board: Board):
         super(FuzzyPlayer, self).__init__(racket, ball, board)
+        # for Mamdami:
         # x_dist = fuzz.control.Antecedent...
         # y_dist = fuzz.control.Antecedent...
-        # speed = fuzz.control.Consequent...
-        # racket_controller = fuzz.control.ControlSystem...
+        # velocity = fuzz.control.Consequent...
+        # self.racket_controller = fuzz.control.ControlSystem...
+
+        # visualize Mamdami
+        # x_dist.view()
+        # ...
+
+        # for TSK:
+        # self.x_universe = np.arange...
+        # self.x_mf = {
+        #     "far_left": fuzz.trapmf(
+        #         self.x_universe,
+        #         [
+        #             ...
+        #         ],
+        #     ),
+        #     ...
+        # }
+        # ...
+        # self.velocity_fx = {
+        #     "f_slow_left": lambda x_diff, y_diff: -1 * (abs(x_diff) + y_diff),
+        #     ...
+        # }
+
+        # visualize TSK
+        # plt.figure()
+        # for name, mf in self.x_mf.items():
+        #     plt.plot(self.x_universe, mf, label=name)
+        # plt.legend()
+        # plt.show()
+        # ...
 
     def act(self, x_diff: int, y_diff: int):
         velocity = self.make_decision(x_diff, y_diff)
         self.move(self.racket.rect.x + velocity)
 
     def make_decision(self, x_diff: int, y_diff: int):
-        # racket_controller.compute()
+        # for Mamdami:
+        # self.racket_controller.compute()
+        # velocity = self.racket_controller.o..
+
+        # for TSK:
+        # x_vals = {
+        #     name: fuzz.interp_membership(self.x_universe, mf, x_diff)
+        #     for name, mf in self.x_mf.items()
+        # }
         # ...
+        # rule activations with Zadeh norms
+        # activations = {
+        #     "f_slow_left": max(
+        #         [
+        #             min(x_vals...),
+        #             min(x_vals...),
+        #         ]
+        #     ),
+        #     ...
+        # }
+
+        # velocity = sum(
+        #     activations[val] * self.velocity_fx[val](x_diff, y_diff)
+        #     for val in activations
+        # ) / sum(activations[val] for val in activations)
+
         return 0
 
 
