@@ -231,10 +231,9 @@ class HumanPlayer(Player):
 # import matplotlib.pyplot as plt
 
 
-class FuzzyPlayer(Player):
+class MamdaniPlayer(Player):
     def __init__(self, racket: Racket, ball: Ball, board: Board):
         super(FuzzyPlayer, self).__init__(racket, ball, board)
-        # for Mamdami:
         # x_dist = fuzz.control.Antecedent...
         # y_dist = fuzz.control.Antecedent...
         # velocity = fuzz.control.Consequent...
@@ -244,7 +243,21 @@ class FuzzyPlayer(Player):
         # x_dist.view()
         # ...
 
-        # for TSK:
+    def act(self, x_diff: int, y_diff: int):
+        velocity = self.make_decision(x_diff, y_diff)
+        self.move(self.racket.rect.x + velocity)
+
+    def make_decision(self, x_diff: int, y_diff: int):
+        # for Mamdami:
+        # self.racket_controller.compute()
+        # velocity = self.racket_controller.output...
+
+        return 0
+
+
+class TSKPlayer(Player):
+    def __init__(self, racket: Racket, ball: Ball, board: Board):
+        super(TSKPlayer, self).__init__(racket, ball, board)
         # self.x_universe = np.arange...
         # self.x_mf = {
         #     "far_left": fuzz.trapmf(
@@ -274,11 +287,6 @@ class FuzzyPlayer(Player):
         self.move(self.racket.rect.x + velocity)
 
     def make_decision(self, x_diff: int, y_diff: int):
-        # for Mamdami:
-        # self.racket_controller.compute()
-        # velocity = self.racket_controller.o..
-
-        # for TSK:
         # x_vals = {
         #     name: fuzz.interp_membership(self.x_universe, mf, x_diff)
         #     for name, mf in self.x_mf.items()
@@ -305,5 +313,6 @@ class FuzzyPlayer(Player):
 
 if __name__ == "__main__":
     game = PongGame(800, 400, NaiveOponent, HumanPlayer)
-    # game = PongGame(800, 400, NaiveOponent, FuzzyPlayer)
+    # game = PongGame(800, 400, NaiveOponent, MamdaniPlayer)
+    # game = PongGame(800, 400, NaiveOponent, TSKPlayer)
     game.run()
